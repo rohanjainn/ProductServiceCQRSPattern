@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/products")
 public class ProductCommandController {
-    
+
     private CommandGateway commandGateway;
 
     public ProductCommandController(CommandGateway commandGateway) {
@@ -21,16 +21,15 @@ public class ProductCommandController {
     }
 
     @PostMapping
-    public String addProduct(@RequestBody Product product){
+    public String addProduct(@RequestBody Product productRestModel) {
 
-        CreateProductCommand createProductCommand=CreateProductCommand
-                .builder()
-                .productId(UUID.randomUUID().toString())
-                .name(product.getName())
-                .price(product.getPrice())
-                .quantity(product.getQuantity())
-                .build();
-
+        CreateProductCommand createProductCommand =
+                CreateProductCommand.builder()
+                        .productId(UUID.randomUUID().toString())
+                        .name(productRestModel.getName())
+                        .price(productRestModel.getPrice())
+                        .quantity(productRestModel.getQuantity())
+                        .build();
         String result = commandGateway.sendAndWait(createProductCommand);
         return result;
     }
